@@ -4,7 +4,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace DiscordBot.Modules
+namespace DiscordBot.Commands
 {
     public class Role : ModuleBase<SocketCommandContext>
     {

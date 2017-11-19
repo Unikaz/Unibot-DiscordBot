@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace DiscordBot.Modules
+namespace DiscordBot.Commands
 {
     public class Whois : ModuleBase<SocketCommandContext>
     {

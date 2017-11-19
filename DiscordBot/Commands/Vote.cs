@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Discord;
 using Discord.Commands;
 
-namespace DiscordBot.Modules
+namespace DiscordBot.Commands
 {
     public class Vote : ModuleBase<SocketCommandContext>
     {

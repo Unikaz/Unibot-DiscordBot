@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Discord.Commands;
 
-namespace DiscordBot.Modules
+namespace DiscordBot.CommandsExcluded
 {
     public class Avast : ModuleBase<SocketCommandContext>
     {
