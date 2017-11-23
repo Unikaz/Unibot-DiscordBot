@@ -30,7 +30,7 @@ namespace DiscordBot.Challenges
         public bool IsCorrect(SocketUser user, string answer)
         {
             int duration = GetDuration();
-            if (GetAnswer() == answer)
+            if (TestAnswer(answer))
             {
                 if (!_winnersDictionary.ContainsKey(user))
                 {
@@ -60,7 +60,7 @@ namespace DiscordBot.Challenges
             embedBuilder.Color = Color.Purple;
             embedBuilder.Title = "====== Challenge #" + _id + " : " + getName() + " ======";
             embedBuilder.AddField("Question: ", GetQuestion());
-            embedBuilder.AddField("Réponse : ", GetAnswer());
+            embedBuilder.AddField("Réponse : ", GetBestAnswer());
             if (ordered.Count > 0)
             {
                 embedBuilder.ThumbnailUrl = ordered[0].Key.GetAvatarUrl();
@@ -87,7 +87,8 @@ namespace DiscordBot.Challenges
         // Abstracts
         public abstract string getName();
         public abstract string GetQuestion();
-        public abstract string GetAnswer();
+        public abstract bool TestAnswer(string answer);
+        public abstract string GetBestAnswer();
         public abstract EmbedBuilder GetQuestionEmbedBuilder();
         public abstract EmbedBuilder GetResultEmbedBuilder(EmbedBuilder embedBuilder);
 

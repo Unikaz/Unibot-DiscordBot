@@ -14,6 +14,7 @@ namespace DiscordBot.Challenges
         {
             _challengesList.Add("math", typeof(Math));
             _challengesList.Add("sudoku", typeof(Sudoku));
+            _challengesList.Add("path", typeof(Pathfinder));
         }
 
         public static ChallengesManager Get => _instance ?? (_instance = new ChallengesManager());

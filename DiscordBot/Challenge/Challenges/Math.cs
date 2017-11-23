@@ -53,10 +53,16 @@ namespace DiscordBot.Challenge.Challenges
             return _question;
         }
 
-        public override string GetAnswer()
+        public override bool TestAnswer(string answer)
+        {
+            return answer == _answer;
+        }
+
+        public override string GetBestAnswer()
         {
             return _answer;
         }
+
 
         public override EmbedBuilder GetQuestionEmbedBuilder()
         {
