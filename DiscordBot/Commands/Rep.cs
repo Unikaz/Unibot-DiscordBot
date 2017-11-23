@@ -20,9 +20,9 @@ namespace DiscordBot.Commands
                         if (challengeId != -1) //todo test challengeId validity
                         {
                             string response = string.Join(" ", args.Skip(1));
-                            Challenges.Challenge challenge = ChallengesManager.Get.GetChallenge(challengeId);
-                            int duration = challenge.GetDuration();
-                            bool win = challenge.IsCorrect(Context.User, response);
+                            Challenges.AChallenge aChallenge = ChallengesManager.Get.GetChallenge(challengeId);
+                            int duration = aChallenge.GetDuration();
+                            bool win = aChallenge.IsCorrect(Context.User, response);
                             ReplyAsync(Context.User.Mention + " a répondu au défi #" + challengeId + " en " + duration + "ms et a eu " + (win ? "juste !" : "faux... essaye encore !"));
                             return;
                         }

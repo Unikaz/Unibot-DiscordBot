@@ -9,31 +9,31 @@ namespace DiscordBot.CommandsChallenges
         public async Task MathAsync(params string[] args)
         {
             string str = args[1];
-            ReplyAsync("!rep " + args[0] + " " + process(str));
+            ReplyAsync("!rep " + args[0] + " " + (process(str)+"").Replace(",", "."));
         }
 
-        public int process(string str)
+        public float process(string str)
         {
             string[] ope;
-            ope = str.Split('+');
-            if (ope.Length > 0)
+            if (str.Contains("+"))
             {
+                ope = str.Split('+');
                 return int.Parse(ope[0]) + int.Parse(ope[1]);
             }
-            ope = str.Split('-');
-            if (ope.Length > 0)
+            if (str.Contains("-"))
             {
+                ope = str.Split('-');
                 return int.Parse(ope[0]) - int.Parse(ope[1]);
             }
-            ope = str.Split('*');
-            if (ope.Length > 0)
+            if (str.Contains("*"))
             {
+                ope = str.Split('*');
                 return int.Parse(ope[0]) * int.Parse(ope[1]);
             }
-            ope = str.Split('/');
-            if (ope.Length > 0)
+            if (str.Contains("/"))
             {
-                return int.Parse(ope[0]) / int.Parse(ope[1]);
+                ope = str.Split('/');
+                return ((int)(int.Parse(ope[0]) / float.Parse(ope[1])*100))/100f;
             }
             return 0;
         }

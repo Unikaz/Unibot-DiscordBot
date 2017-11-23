@@ -6,25 +6,20 @@ using System.Runtime.InteropServices;
 using Discord;
 using Discord.WebSocket;
 using DiscordBot.DataModel;
+using Microsoft.VisualBasic;
 
 namespace DiscordBot.Challenges
 {
-    public class Challenge
+    public abstract class AChallenge
     {
         private int _id;
-        private string _type;
-        private string _question;
-        private string _answer;
         private DateTime _dateTime;
         private Dictionary<SocketUser, int> _winnersDictionary = new Dictionary<SocketUser, int>();
 
-        public Challenge(int id, string type, string question, string answer, DateTime dateTime)
+        public AChallenge(int id)
         {
             _id = id;
-            _type = type;
-            _question = question;
-            _answer = answer;
-            _dateTime = dateTime;
+            _dateTime = DateAndTime.Now;
         }
 
         public int GetDuration()
@@ -35,7 +30,7 @@ namespace DiscordBot.Challenges
         public bool IsCorrect(SocketUser user, string answer)
         {
             int duration = GetDuration();
-            if (_answer == answer)
+            if (GetAnswer() == answer)
             {
                 if (!_winnersDictionary.ContainsKey(user))
                 {
@@ -54,6 +49,7 @@ namespace DiscordBot.Challenges
             return string.Join("\n", strs);
         }
 
+        // create the default result embed, and call the for a potential modification by the specific challenge
         public Embed GetResultsEmbed()
         {
             var ordered = _winnersDictionary.ToList();
@@ -62,31 +58,39 @@ namespace DiscordBot.Challenges
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.Color = Color.Purple;
-            embedBuilder.Title = "====== Challenge #" + _id + " : " + _type + " ======";
-            embedBuilder.AddField("Question: ", _question);
-            embedBuilder.AddField("Réponse : ", _answer);
-            Console.Out.WriteLine("1");
-            embedBuilder.ThumbnailUrl = ordered[0].Key.GetAvatarUrl();
-            Console.Out.WriteLine("2");
-            string classement = "";
-            for (var i = 0; i < strs.Length; i++)
+            embedBuilder.Title = "====== Challenge #" + _id + " : " + getName() + " ======";
+            embedBuilder.AddField("Question: ", GetQuestion());
+            embedBuilder.AddField("Réponse : ", GetAnswer());
+            if (ordered.Count > 0)
             {
-                Console.Out.WriteLine("3");
-                classement += (i + 1) + " " + strs[i] + "\n";
+                embedBuilder.ThumbnailUrl = ordered[0].Key.GetAvatarUrl();
+                string classement = "";
+                for (var i = 0; i < strs.Length; i++)
+                {
+                    classement += (i + 1) + " " + strs[i] + "\n";
+                }
+                embedBuilder.AddField("Classement ", classement);
             }
-            Console.Out.WriteLine("4");
-            embedBuilder.AddField("Classement ", classement);
+            // call to the specfic modifications
+            embedBuilder = GetResultEmbedBuilder(embedBuilder); 
             return embedBuilder.Build();
         }
 
-        public string GetQuestion()
-        {
-            return _question;
-        }
+        
 
         public int GetID()
         {
             return _id;
         }
+
+        
+        // Abstracts
+        public abstract string getName();
+        public abstract string GetQuestion();
+        public abstract string GetAnswer();
+        public abstract EmbedBuilder GetQuestionEmbedBuilder();
+        public abstract EmbedBuilder GetResultEmbedBuilder(EmbedBuilder embedBuilder);
+
+
     }
 }

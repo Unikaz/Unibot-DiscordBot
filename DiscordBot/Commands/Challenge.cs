@@ -1,44 +1,57 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DiscordBot.Challenges;
-using Microsoft.VisualBasic;
 
 namespace DiscordBot.Commands
 {
     public class Challenge : ModuleBase<SocketCommandContext>
     {
-        public static string roleNAme = "bots"; 
+        public static string roleName = "bots";
         public static SocketRole _role = null;
 
         [Command("challenge")]
         public async Task ChallengeAsync(params string[] args)
         {
+            if (_role == null)
+            {
+                _role = Context.Guild.Roles.Where(role => role.Name == roleName).ToList()[0];
+            }
             if (args.Length == 0)
             {
-                if (_role == null)
+                // create a random challenge
+                AChallenge challenge = ChallengesManager.Get.CreateChallenge();
+                EmbedBuilder embedBuilder = challenge.GetQuestionEmbedBuilder();
+                if (embedBuilder != null)
                 {
-                    _role = Context.Guild.Roles.Where(role => role.Name == roleNAme).ToList()[0];
+                    ReplyAsync(
+                        _role.Mention + " " + challenge.getName() + " #" + challenge.GetID() + " " +
+                        challenge.GetQuestion(), false, challenge.GetQuestionEmbedBuilder());
                 }
-                //-------------- TEMP ------------------
-                //random math
-                Random random = new Random();
-                int a = random.Next(0, 1000);
-                int b = random.Next(0, 1000);
-                int res = a + b;
-                string type = "math";
-                Challenges.Challenge challenge =
-                    ChallengesManager.Get.CreateChallenge(type, a + "+" + b, res + "", DateAndTime.Now);
-                //-------------- TEMP ------------------
-                ReplyAsync(_role.Mention + " " + type + " #" + challenge.GetID() + " " + challenge.GetQuestion());
+                else
+                {
+                    ReplyAsync(
+                        _role.Mention + " " + challenge.getName() + " #" + challenge.GetID() + " " +
+                        challenge.GetQuestion());
+                }
             }
-            else if(args.Length == 1)
+            else if (args.Length == 1)
             {
                 int id;
-                if(int.TryParse(args[0], out id))
+                if (int.TryParse(args[0], out id))
+                {
+                    // display result for the specified challenge
                     ReplyAsync("", false, ChallengesManager.Get.GetChallenge(id).GetResultsEmbed());
+                }
+                else
+                {
+                    // create the specified challenge
+                    AChallenge challenge = ChallengesManager.Get.CreateChallenge(args[0]);
+                    ReplyAsync(_role.Mention + " " + challenge.getName() + " #" + challenge.GetID() + " " +
+                               challenge.GetQuestion(), false, challenge.GetQuestionEmbedBuilder());
+                }
             }
         }
     }
