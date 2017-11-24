@@ -59,8 +59,10 @@ namespace DiscordBot.Challenges
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.Color = Color.Purple;
             embedBuilder.Title = "====== Challenge #" + _id + " : " + getName() + " ======";
-            embedBuilder.AddField("Question: ", GetQuestion());
-            embedBuilder.AddField("Réponse : ", GetBestAnswer());
+            if (GetQuestion() != null && GetQuestion().Length < 1024)
+                embedBuilder.AddField("Question: ", GetQuestion());
+            if (GetBestAnswer() != null && GetBestAnswer().Length < 1024)
+                embedBuilder.AddField("Réponse : ", GetBestAnswer());
             if (ordered.Count > 0)
             {
                 embedBuilder.ThumbnailUrl = ordered[0].Key.GetAvatarUrl();
@@ -72,26 +74,24 @@ namespace DiscordBot.Challenges
                 embedBuilder.AddField("Classement ", classement);
             }
             // call to the specfic modifications
-            embedBuilder = GetResultEmbedBuilder(embedBuilder); 
+            embedBuilder = GetResultEmbedBuilder(embedBuilder);
             return embedBuilder.Build();
         }
 
-        
 
         public int GetID()
         {
             return _id;
         }
 
-        
+
         // Abstracts
         public abstract string getName();
+
         public abstract string GetQuestion();
         public abstract bool TestAnswer(string answer);
         public abstract string GetBestAnswer();
         public abstract EmbedBuilder GetQuestionEmbedBuilder();
         public abstract EmbedBuilder GetResultEmbedBuilder(EmbedBuilder embedBuilder);
-
-
     }
 }
