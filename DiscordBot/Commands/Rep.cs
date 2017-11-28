@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
-using DiscordBot.Challenges;
+using DiscordBot.Challenge;
 
 namespace DiscordBot.Commands
 {
@@ -20,7 +20,7 @@ namespace DiscordBot.Commands
                         if (challengeId != -1) //todo test challengeId validity
                         {
                             string response = string.Join(" ", args.Skip(1));
-                            Challenges.AChallenge aChallenge = ChallengesManager.Get.GetChallenge(challengeId);
+                            AChallenge aChallenge = ChallengesManager.Get.GetChallenge(challengeId);
                             int duration = aChallenge.GetDuration();
                             bool win = aChallenge.IsCorrect(Context.User, response);
                             ReplyAsync(Context.User.Mention + " a répondu au défi #" + challengeId + " en " + duration + "ms et a eu " + (win ? "juste !" : "faux... essaye encore !"));

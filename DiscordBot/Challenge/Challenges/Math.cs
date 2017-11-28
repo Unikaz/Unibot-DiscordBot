@@ -1,6 +1,5 @@
 ﻿using System;
 using Discord;
-using DiscordBot.Challenges;
 
 namespace DiscordBot.Challenge.Challenges
 {
@@ -17,7 +16,7 @@ namespace DiscordBot.Challenge.Challenges
             float res = 0;
             int op = random.Next(0, 4);
             string operandes = " ";
-            op = 3;
+//            op = 3;
             switch (op)
             {
                 case 0:
@@ -43,7 +42,7 @@ namespace DiscordBot.Challenge.Challenges
             _answer = _answer.Replace(",", ".");
         }
 
-        public override string getName()
+        public override string GetName()
         {
             return "math";
         }

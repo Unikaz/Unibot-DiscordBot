@@ -4,11 +4,12 @@ using System.Linq;
 using DiscordBot.Challenge.Challenges;
 using Math = DiscordBot.Challenge.Challenges.Math;
 
-namespace DiscordBot.Challenges
+namespace DiscordBot.Challenge
 {
     public class ChallengesManager
     {
         private static ChallengesManager _instance = null;
+        private static string _prefix = "[ChallengeManager] ";
 
         private ChallengesManager()
         {
@@ -36,11 +37,12 @@ namespace DiscordBot.Challenges
         {
             if (_challengesList.ContainsKey(type))
             {
+                Console.Out.WriteLine(_prefix + "New Challenge #" + (_challengeIndex+1) + " creation...");
                 AChallenge aChallenge = (AChallenge) Activator.CreateInstance(_challengesList[type], ++_challengeIndex);
                 _challenges[_challengeIndex] = aChallenge;
                 return aChallenge;
             }
-            Console.Out.WriteLine("Error on ChallengesManager.CreateChallenge: type " + type + " isn't found");
+            Console.Out.WriteLine(_prefix + "Error on ChallengesManager.CreateChallenge: type " + type + " isn't found");
             return null;
         }
 

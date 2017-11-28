@@ -68,30 +68,34 @@ namespace DiscordBot
 
         private async Task HandleCommandAsync(SocketMessage arg)
         {
-            var message = arg as SocketUserMessage;
-            if (message == null)
-                return;
-
-
-            bool botsTag = arg.MentionedRoles.Any(Role => Role.Name == "bots");
-            SocketRole socketRole = null;
-            if (botsTag)
-                socketRole = arg.MentionedRoles.First(Role => Role.Name == "bots");
-
-
-            // dont know what is this used for...
-            int argPos = 0;
-            // check if we have to handle the message
-            if (message.HasStringPrefix("!", ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos) || botsTag)
+            Task.Factory.StartNew(async () =>
             {
-                if (botsTag)
-                    argPos = socketRole.Mention.Length+1;
+                var message = arg as SocketUserMessage;
+                if (message == null)
+                    return;
 
-                var context = new SocketCommandContext(_client, message);
-                var result = await _command.ExecuteAsync(context, argPos, _services);
-                if (!result.IsSuccess)
-                    Console.WriteLine(result.ErrorReason);
-            }
+
+                bool botsTag = arg.MentionedRoles.Any(Role => Role.Name == "bots");
+                SocketRole socketRole = null;
+                if (botsTag)
+                    socketRole = arg.MentionedRoles.First(Role => Role.Name == "bots");
+
+
+                // dont know what is this used for...
+                int argPos = 0;
+                // check if we have to handle the message
+                if (message.HasStringPrefix("!", ref argPos) ||
+                    message.HasMentionPrefix(_client.CurrentUser, ref argPos) || botsTag)
+                {
+                    if (botsTag)
+                        argPos = socketRole.Mention.Length + 1;
+
+                    var context = new SocketCommandContext(_client, message);
+                    var result = await _command.ExecuteAsync(context, argPos, _services);
+                    if (!result.IsSuccess)
+                        Console.WriteLine(result.ErrorReason);
+                }
+            });
         }
     }
 }

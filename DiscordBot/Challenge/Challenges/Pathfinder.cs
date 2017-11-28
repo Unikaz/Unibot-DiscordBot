@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Discord;
-using DiscordBot.Challenges;
 
 namespace DiscordBot.Challenge.Challenges
 {
@@ -14,43 +14,51 @@ namespace DiscordBot.Challenge.Challenges
 
         private const int SizeX = 40;
         private const int SizeY = 20;
-        private const int Rate = 20;
+        private const int Rate = 35;
         private const char Wall = '█';
         private const char Open = '░';
         private const char Path = '╬';
 
         public Pathfinder(int id) : base(id)
         {
-            Random random = new Random();
-            try
+            Thread.Sleep(5000);
+            string valid = null;
+            for (int i = 0; i < 500 && valid ==  null; i++) // we have 20 tries to find a valid map
             {
-                for (var y = 0; y < SizeY; y++)
+                Console.Out.WriteLine("Map " + i);
+                _question = "";
+                Random random = new Random();
+                try
                 {
-                    for (var x = 0; x < SizeX; x++)
+                    for (var y = 0; y < SizeY; y++)
                     {
-                        if (x == 0 && y == 0 || x == SizeX - 1 && y == SizeY - 1)
+                        for (var x = 0; x < SizeX; x++)
                         {
-                            _question += Open;
-                            continue; // pour ne pas recouvrir la case de départ
+                            if (x == 0 && y == 0 || x == SizeX - 1 && y == SizeY - 1)
+                            {
+                                _question += Open;
+                                continue; // pour ne pas recouvrir la case de départ
+                            }
+                            if (random.Next(0, 100) < Rate)
+                                _question += Wall;
+                            else
+                                _question += Open;
+                            if (x == SizeX - 1)
+                                _question += '\n';
                         }
-                        if (random.Next(0, 100) < Rate)
-                            _question += Wall;
-                        else
-                            _question += Open;
-                        if (x == SizeX - 1)
-                            _question += '\n';
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.Out.WriteLine(e);
+                catch (Exception e)
+                {
+                    Console.Out.WriteLine(e);
+                }
+                valid = CommandsChallenges.Pathfinder.Process(_question+"\n");
             }
 
             Console.Out.WriteLine(_question);
         }
 
-        public override string getName()
+        public override string GetName()
         {
             return "pathfinder";
         }

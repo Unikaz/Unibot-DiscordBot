@@ -8,7 +8,7 @@ using Discord.WebSocket;
 using DiscordBot.DataModel;
 using Microsoft.VisualBasic;
 
-namespace DiscordBot.Challenges
+namespace DiscordBot.Challenge
 {
     public abstract class AChallenge
     {
@@ -58,7 +58,7 @@ namespace DiscordBot.Challenges
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.Color = Color.Purple;
-            embedBuilder.Title = "====== Challenge #" + _id + " : " + getName() + " ======";
+            embedBuilder.Title = "====== Challenge #" + _id + " : " + GetName() + " ======";
             if (GetQuestion() != null && GetQuestion().Length < 1024)
                 embedBuilder.AddField("Question: ", GetQuestion());
             if (GetBestAnswer() != null && GetBestAnswer().Length < 1024)
@@ -79,14 +79,14 @@ namespace DiscordBot.Challenges
         }
 
 
-        public int GetID()
+        public int GetId()
         {
             return _id;
         }
 
 
         // Abstracts
-        public abstract string getName();
+        public abstract string GetName();
 
         public abstract string GetQuestion();
         public abstract bool TestAnswer(string answer);

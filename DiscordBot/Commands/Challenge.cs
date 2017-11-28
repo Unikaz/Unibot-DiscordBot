@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using DiscordBot.Challenges;
+using DiscordBot.Challenge;
 
 namespace DiscordBot.Commands
 {
@@ -27,13 +27,13 @@ namespace DiscordBot.Commands
                 if (embedBuilder != null)
                 {
                     ReplyAsync(
-                        _role.Mention + " " + challenge.getName() + " #" + challenge.GetID() + " " +
+                        _role.Mention + " " + challenge.GetName() + " #" + challenge.GetId() + " " +
                         challenge.GetQuestion(), false, challenge.GetQuestionEmbedBuilder());
                 }
                 else
                 {
                     ReplyAsync(
-                        _role.Mention + " " + challenge.getName() + " #" + challenge.GetID() + " " +
+                        _role.Mention + " " + challenge.GetName() + " #" + challenge.GetId() + " " +
                         challenge.GetQuestion());
                 }
             }
@@ -49,7 +49,7 @@ namespace DiscordBot.Commands
                 {
                     // create the specified challenge
                     AChallenge challenge = ChallengesManager.Get.CreateChallenge(args[0]);
-                    ReplyAsync(_role.Mention + " " + challenge.getName() + " #" + challenge.GetID() + " " +
+                    ReplyAsync(_role.Mention + " " + challenge.GetName() + " #" + challenge.GetId() + " " +
                                challenge.GetQuestion(), false, challenge.GetQuestionEmbedBuilder());
                 }
             }

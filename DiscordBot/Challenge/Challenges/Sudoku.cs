@@ -1,5 +1,4 @@
 ﻿using System;
-using DiscordBot.Challenges;
 using Discord;
 
 namespace DiscordBot.Challenge.Challenges
@@ -74,7 +73,7 @@ namespace DiscordBot.Challenge.Challenges
         }
 
         // from AChallenge
-        public override string getName()
+        public override string GetName()
         {
             return "sudoku";
         }
