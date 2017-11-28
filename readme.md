@@ -9,14 +9,18 @@ NB: If you want to try this bot, please rename AppExemple.config into App.config
 - `!help` display commands
 - `!role <add|remove> <roleName>` add or remove the named role
 - `!whois <Pseudo>` to learn more about someone
-- `!challenge` ask for a challenge
+- `!challenge [challengeNumber|challengeType]` ask for a challenge
 - `!rep #<id> <answer>` answer to a challenge
 
 ### Challenge implemented (Server side)
 - `math` an easy operation with only two operandes
+- `sudoku` a (temporary harcoded) sudoku to resolve
+- `pathfinder` generate a random grid and validate the users results
 
-### Challenge inplemented (Client Side)
+### Challenge implemented (Client Side)
 - `math`
+- `sudoku` a small implementation, can only solve really easy sudoku (not on git to avoid cheat)
+- `pathfinder` solve a simple pathinder based on Dijkstra's algorithm (not on git to avoid cheat)
 
 ### Users
 - add User entity
@@ -33,6 +37,12 @@ NB: If you want to try this bot, please rename AppExemple.config into App.config
 
 
 ## ChangeLog
+##### 171124.0:
+- Add challenge sudoku
+- Add challenge pathfinder
+- Client side of sudoku and pathfinder
+- Rework challenge manager
+
 ##### 171119.0:
 - Add command challenge
 - Add command rep

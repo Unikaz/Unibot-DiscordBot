@@ -22,15 +22,25 @@ namespace DiscordBot.Commands
                         {
                             case "add":
                             case "+":
+                            {
                                 (Context.User as IGuildUser).AddRoleAsync(targetRole);
-                                ReplyAsync("add role ");
+                                EmbedBuilder embedBuilder = new EmbedBuilder();
+                                embedBuilder.Description = Context.User.Mention + " a rejoint les " + targetRole.Mention;
+                                embedBuilder.ThumbnailUrl = Context.User.GetAvatarUrl();
+                                ReplyAsync("", false, embedBuilder);
                                 break;
+                            }
                             case "remove":
                             case "rm":
                             case "-":
+                            {
                                 (Context.User as IGuildUser).RemoveRoleAsync(targetRole);
-                                ReplyAsync("remove role ");
+                                EmbedBuilder embedBuilder = new EmbedBuilder();
+                                embedBuilder.Description = Context.User.Mention + " a quitté les " + targetRole.Mention;
+                                embedBuilder.ThumbnailUrl = Context.User.GetAvatarUrl();
+                                ReplyAsync("", false, embedBuilder);
                                 break;
+                            }
                             default:
                                 ReplyAsync("You have to choose between add or remove, that's all I got");
                                 break;
