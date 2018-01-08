@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -8,7 +7,6 @@ using Discord.Commands;
 using Discord.WebSocket;
 using DiscordBot.DataModel;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic.Logging;
 
 namespace DiscordBot
 {
@@ -70,6 +68,10 @@ namespace DiscordBot
         {
             Task.Factory.StartNew(async () =>
             {
+                // check if user exists
+                var user = UsersManager.Get.GetUserAsync(arg.Author);
+//                var user = UsersManager.Get.GetUser(arg.Author.Username + "#" + arg.Author.Discriminator);
+                
                 var message = arg as SocketUserMessage;
                 if (message == null)
                     return;

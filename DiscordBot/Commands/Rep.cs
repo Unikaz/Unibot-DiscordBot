@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
 using DiscordBot.Challenge;
+using DiscordBot.DataModel;
 
 namespace DiscordBot.Commands
 {
@@ -23,7 +25,19 @@ namespace DiscordBot.Commands
                             AChallenge aChallenge = ChallengesManager.Get.GetChallenge(challengeId);
                             int duration = aChallenge.GetDuration();
                             bool win = aChallenge.IsCorrect(Context.User, response);
-                            ReplyAsync(Context.User.Mention + " a répondu au défi #" + challengeId + " en " + duration + "ms et a eu " + (win ? "juste !" : "faux... essaye encore !"));
+//                            ReplyAsync(Context.User.Mention + " a répondu au défi #" + challengeId + " en " + duration + "ms et a eu " + (win ? "juste !" : "faux... essaye encore !"));
+                            
+                            User user = await UsersManager.Get.GetUserAsync(Context.User);
+                            if (win)
+                            {
+                                Context.Message.AddReactionAsync(new Emoji(user.Bot ? "⚙" : "🍪")); //⚙
+                                user.Score += 1;
+                                UsersManager.Get.RegisterInDbAsync(user);
+                            }
+                            else
+                            {
+                                Context.Message.AddReactionAsync(new Emoji("❌"));
+                            }
                             return;
                         }
                         else
